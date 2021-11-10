@@ -1,11 +1,25 @@
-FROM jenkins/jenkins:2.303.3-lts-jdk11
+FROM jenkins/jenkins:2.320-alpine-jdk8
 
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
-
+ENV TZT "Europe/Warsaw"
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JENKINS_ADMIN_ID admin
+ENV JENKINS_ADMIN_PASSWORD password
 
-COPY jenkins-casc.yaml /usr/local/jenkins-casc.yaml
+USER root
 
-ENV CASC_JENKINS_CONFIG /usr/local/jenkins-casc.yaml
+# RUN apk update \
+#     && apk add tzdata ca-certificates\
+#     && rm -rf /var/cache/apk/* \
+#     && cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime \
+#     && echo ${TZT}>/etc/timezone \
+#     && date
+
+
+
+
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt --skip-failed-plugins
+
+COPY casc.yaml /var/jenkins_home/casc.yaml
+
+ENV CASC_JENKINS_CONFIG "/var/jenkins_home/casc.yaml"
