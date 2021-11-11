@@ -7,18 +7,19 @@ ENV JENKINS_ADMIN_PASSWORD password
 
 USER root
 
-# RUN apk update \
-#     && apk add tzdata ca-certificates\
-#     && rm -rf /var/cache/apk/* \
-#     && cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime \
-#     && echo ${TZT}>/etc/timezone \
-#     && date
+RUN apk update \
+    && apk add tzdata ca-certificates\
+    && rm -rf /var/cache/apk/* \
+    && cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime \
+    && echo ${TZT}>/etc/timezone \
+    && date
 
 
 
+COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+COPY security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
 
-COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt --skip-failed-plugins
 
 COPY casc.yaml /var/jenkins_home/casc.yaml
 
