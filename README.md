@@ -1,6 +1,6 @@
 # Jenkins Server With Configuration-as-Code
 
-## documentation:
+## docs/sources:
 - https://github.com/jenkinsci/docker
 - https://verifa.io/insights/getting-started-with-jenkins-config-as-code/
 - https://github.com/jenkinsci/configuration-as-code-plugin
