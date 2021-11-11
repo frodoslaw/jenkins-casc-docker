@@ -1,4 +1,4 @@
-# jenkins-docker
+# Jenkins Server With Configuration-as-Code
 
 ## documentation:
 - https://github.com/jenkinsci/docker
